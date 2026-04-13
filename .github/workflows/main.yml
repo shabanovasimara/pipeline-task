@@ -1,0 +1,26 @@
+name: Inner World Pipeline
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Fayllari yoxla
+        run: |
+          echo "Pipeline isleyir..."
+          ls -R
+
+      - name: HTML yoxla
+        run: test -f index.html
+
+      - name: CSS yoxla
+        run: test -f style.css
+
+      - name: JS yoxla
+        run: test -f script.js
