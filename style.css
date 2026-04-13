@@ -1,0 +1,133 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+  background: linear-gradient(120deg, #020617, #1e293b);
+  color: white;
+}
+
+/* HEADER */
+header {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px 50px;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(10px);
+}
+
+header h1 {
+  color: #a78bfa;
+}
+
+nav a {
+  margin-left: 20px;
+  text-decoration: none;
+  color: white;
+  transition: 0.3s;
+}
+
+nav a:hover {
+  color: #a78bfa;
+}
+
+/* HERO */
+.hero {
+  height: 90vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: radial-gradient(circle, #1e1b4b, #020617);
+  text-align: center;
+}
+
+.hero h2 {
+  font-size: 50px;
+  margin-bottom: 20px;
+  animation: fadeIn 2s ease;
+}
+
+.hero p {
+  opacity: 0.8;
+  margin-bottom: 20px;
+}
+
+button {
+  padding: 12px 25px;
+  border: none;
+  background: #a78bfa;
+  color: black;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+button:hover {
+  background: #7c3aed;
+  color: white;
+}
+
+/* CARDS */
+.cards-section {
+  padding: 60px;
+  text-align: center;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 25px;
+  margin-top: 30px;
+}
+
+.card {
+  padding: 25px;
+  background: rgba(255,255,255,0.05);
+  border-radius: 15px;
+  backdrop-filter: blur(10px);
+  transition: 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-10px);
+  background: rgba(255,255,255,0.1);
+}
+
+/* QUOTE */
+.quote {
+  padding: 50px;
+  text-align: center;
+  font-style: italic;
+  opacity: 0.7;
+}
+
+/* CONTACT */
+.contact {
+  text-align: center;
+  padding: 60px;
+}
+
+input, textarea {
+  width: 60%;
+  padding: 12px;
+  margin: 10px;
+  border-radius: 8px;
+  border: none;
+}
+
+/* FOOTER */
+footer {
+  text-align: center;
+  padding: 20px;
+  background: black;
+}
+
+/* ANIMATION */
+@keyframes fadeIn {
+  from {opacity: 0;}
+  to {opacity: 1;}
+}
