@@ -6,7 +6,6 @@ on:
       - main
 
 jobs:
-
   # ─── JOB 1: Dependency quraşdırma + Lint ─────────────────
   install_and_lint:
     name:  Install & Lint
