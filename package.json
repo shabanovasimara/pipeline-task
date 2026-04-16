@@ -1,0 +1,26 @@
+{
+  "name": "pipeline",
+  "version": "1.0.0",
+  "description": "",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shabanovasimara/pipeline-task.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/shabanovasimara/pipeline-task/issues"
+  },
+  "homepage": "https://github.com/shabanovasimara/pipeline-task#readme",
+  "dependencies": {
+    "eslint": "^10.2.0",
+    "html-validate": "^10.13.0",
+    "stylelint": "^17.8.0"
+  }
+}
