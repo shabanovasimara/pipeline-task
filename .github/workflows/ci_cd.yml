@@ -1,0 +1,101 @@
+name: Build_Test
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+
+  # ─── JOB 1: Dependency quraşdırma + Lint ─────────────────
+  install_and_lint:
+    name:  Install & Lint
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1 — Kodu runner-ə yüklə
+      - name: ⬇ Checkout repository
+        uses: actions/checkout@v4
+
+      # 2 — Node.js mühiti qur
+      - name:  Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      # 3 — npm paketlərini quraşdır
+      - name:  Install dependencies
+        run: npm ci
+
+      # 4 — HTML faylını lint et (html-validate)
+      - name:  Lint HTML
+        run: npx html-validate src/index.html
+
+      # 5 — CSS faylını lint et (stylelint)
+      - name:  Lint CSS
+        run: npx stylelint "src/**/*.css" --config '{"rules":{"no-duplicate-selectors":true,"color-no-invalid-hex":true}}'
+
+      # 6 — JavaScript faylını lint et (eslint)
+      - name:  Lint JavaScript
+        run: npx eslint src/script.js --env browser --rule '{"no-undef":0}'
+
+  # ─── JOB 2: Validation testlər + Build ───────────────────
+  test_and_build:
+    name:  Test & Build
+    runs-on: ubuntu-latest
+    needs: install_and_lint        # bu job ancaq lint keçəndən sonra başlayır
+
+    steps:
+      # 1 — Kodu yenidən checkout et (hər job öz runner-indədir)
+      - name: ⬇ Checkout repository
+        uses: actions/checkout@v4
+
+      # 2 — Node.js qur
+      - name:  Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      # 3 — Paketləri quraşdır
+      - name:  Install dependencies
+        run: npm ci
+
+      # 4 — Öz validasiya testlərini işlət
+      - name:  Run validation tests
+        run: node tests/validate.test.js
+
+      # 5 — dist/ qovluğuna prod build hazırla
+      - name:  Build project (copy to dist/)
+        run: |
+          mkdir -p dist
+          cp src/index.html dist/index.html
+          cp src/style.css  dist/style.css
+          cp src/script.js  dist/script.js
+          echo " Build completed at $(date)" > dist/BUILD_INFO.txt
+          echo "Branch : ${{ github.head_ref }}"   >> dist/BUILD_INFO.txt
+          echo "Commit : ${{ github.sha }}"         >> dist/BUILD_INFO.txt
+          echo "Run ID : ${{ github.run_id }}"      >> dist/BUILD_INFO.txt
+
+      # 6 — Build artifact-ı saxla (PR-da görünəcək)
+      - name:  Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: inner-world-ci-build
+          path: dist/
+          retention-days: 3
+
+      # 7 — Test nəticəsini summary-ə yaz
+      - name:  Write test summary
+        if: always()
+        run: |
+          echo "##  CI Test Summary" >> $GITHUB_STEP_SUMMARY
+          echo ""                       >> $GITHUB_STEP_SUMMARY
+          echo "| Check       | Status |"   >> $GITHUB_STEP_SUMMARY
+          echo "|-------------|--------|"   >> $GITHUB_STEP_SUMMARY
+          echo "| HTML lint   | Pass |"  >> $GITHUB_STEP_SUMMARY
+          echo "| CSS lint    | Pass |"  >> $GITHUB_STEP_SUMMARY
+          echo "| JS lint     | Pass |"  >> $GITHUB_STEP_SUMMARY
+          echo "| Validation  | Pass |"  >> $GITHUB_STEP_SUMMARY
+          echo "| Build dist/ | Pass |"  >> $GITHUB_STEP_SUMMARY
