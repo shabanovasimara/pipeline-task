@@ -1,0 +1,6 @@
+Deployment simulation completed successfully.
+Environment: production-simulated
+Branch: local
+Commit: local
+Run ID: local
+Artifacts prepared: BUILD_INFO.txt, index.html, script.js, style.css
